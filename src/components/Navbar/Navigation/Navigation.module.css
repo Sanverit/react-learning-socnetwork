@@ -1,0 +1,12 @@
+.nav{
+    padding: 20px;
+}
+
+.navItem{
+    text-decoration: none;
+    color: cornflowerblue;
+}
+
+.activeLink{
+    color: coral;
+}

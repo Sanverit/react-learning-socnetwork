@@ -1,0 +1,13 @@
+.item{
+    color: brown;
+}
+
+.message{
+    vertical-align: middle;
+}
+  
+.avatarImg{
+    width: 30px;
+    border-radius: 50%;
+    vertical-align: middle;
+}

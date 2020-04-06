@@ -1,0 +1,13 @@
+.profileWrapper{
+    display: grid;
+    grid-template-areas:"c s";
+    grid-template-columns: 4fr 8fr ;
+}
+
+.profileCard{
+    grid-area: c;
+}
+
+.profileStatus{
+    grid-area: s;
+}

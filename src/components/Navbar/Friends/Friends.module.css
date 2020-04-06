@@ -1,0 +1,11 @@
+.friendsBar{
+    background-color: rgb(100, 198, 237);
+}
+
+.title{
+    text-align: center;
+}
+.friendAvaLogos{
+    display: grid;
+    grid-template-columns: 4fr 4fr 4fr;
+}

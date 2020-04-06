@@ -1,0 +1,13 @@
+.appWrapper{
+  /* width: 100%; */
+  /* margin: 0 auto; */
+  display: grid;
+  grid-template-areas: 
+  "n c";
+  grid-template-columns: 2fr 10fr ;
+}
+
+.appWrapperContent{
+  grid-area: c;
+  /* background-color: #fafafa; */
+}
