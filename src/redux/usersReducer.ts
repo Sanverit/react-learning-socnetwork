@@ -9,15 +9,31 @@ const IS_LOADING = 'IS_LOADING'
 const SET_FOLLOW_PROGRESS = 'SET_FOLLOW_PROGRESS'
 
 const initialState = {
-    users: [],
-    pageSize: 5,
-    totalCount:20,
-    currentPage: 1,
-    isLoading: false,
-    isFollowProgress: []
+    users: [] as Array<UserType>,
+    pageSize: 5 as number,
+    totalCount:20 as number,
+    currentPage: 1 as number,
+    isLoading: false as boolean,
+    isFollowProgress: [] as Array<Number>
+}
+type UserType = {
+    id: number,
+    name: string,
+    uniqueUrlName: string | null,
+    photos: {
+        small: string | null,
+        large: string | null
+    }
+    status: string | null,
+    followed: boolean
+}
+type InitialStateType = typeof initialState
+type ActionType = {
+    type: typeof FOLLOW | typeof UNFOLLOW | typeof SET_USERS | typeof SET_CURRENT_PAGE | typeof SET_TOTAL_COUNT | typeof IS_LOADING | typeof SET_FOLLOW_PROGRESS 
+    payload: any
 }
 
-const usersReducer = (state = initialState, action) => {
+const usersReducer = (state:InitialStateType = initialState, action:ActionType) => {
     
     switch (action.type) {
         case FOLLOW:
@@ -84,20 +100,20 @@ const usersReducer = (state = initialState, action) => {
     
 }
 
-export const followUser = (userId) => ({ type: FOLLOW, payload: userId })
-export const unfollowUser = (userId) => ({ type: UNFOLLOW, payload: userId })
-export const setUsers = (users) => ({ type: SET_USERS, payload: users })
-export const setCurrPage = (pageNumber) => ({ type: SET_CURRENT_PAGE, payload: pageNumber })
-export const setTotalCount = (totalCount) => ({ type: SET_TOTAL_COUNT, payload: totalCount })
-export const setLoadingStatus = (status) => ({ type: IS_LOADING, payload: status })
-export const setFollowProgress = (isLoading, userId) => ({ type: SET_FOLLOW_PROGRESS, payload: {isLoading, userId} })
+export const followUser = (userId: number) => ({ type: FOLLOW, payload: userId })
+export const unfollowUser = (userId: number) => ({ type: UNFOLLOW, payload: userId })
+export const setUsers = (users: UserType) => ({ type: SET_USERS, payload: users })
+export const setCurrPage = (pageNumber: number) => ({ type: SET_CURRENT_PAGE, payload: pageNumber })
+export const setTotalCount = (totalCount: number) => ({ type: SET_TOTAL_COUNT, payload: totalCount })
+export const setLoadingStatus = (status: boolean) => ({ type: IS_LOADING, payload: status })
+export const setFollowProgress = (isLoading: boolean, userId:number) => ({ type: SET_FOLLOW_PROGRESS, payload: {isLoading, userId} })
 
 
-export const getUsersThunkCreator = (currentPage, pageSize) => {
-    return (dispatch) => {
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+    return (dispatch: Function) => {
         dispatch(setLoadingStatus(true));
         userAPI.getUsers(currentPage, pageSize)
-            .then((data)=> {
+            .then((data: any)=> {
                 dispatch(setUsers(data.items));
                 dispatch(setTotalCount(data.totalCount));
                 dispatch(setLoadingStatus(false));
@@ -105,12 +121,12 @@ export const getUsersThunkCreator = (currentPage, pageSize) => {
     }
 } 
 
-export const followUnfollowUserThunkCreator = (userId, userFollowed) => {
-    return (dispatch) => {
+export const followUnfollowUserThunkCreator = (userId: number, userFollowed: boolean) => {
+    return (dispatch: Function) => {
         dispatch(setFollowProgress(true, userId));
         if(userFollowed){
             userAPI.unfollowUser(userId)
-                .then((resultCode)=> {
+                .then((resultCode: number)=> {
                     if (resultCode === 0){
                         dispatch(unfollowUser(userId));
                     }
@@ -119,7 +135,7 @@ export const followUnfollowUserThunkCreator = (userId, userFollowed) => {
 
         }else{
             userAPI.followUser(userId)
-                .then((resultCode)=> {
+                .then((resultCode: number)=> {
                     if (resultCode === 0){
                         dispatch(followUser(userId));
                     }
