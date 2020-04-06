@@ -1,3 +1,9 @@
+type InitialStateType = typeof initialState
+type FriendType = {
+    name: string,
+    avaFriend: string,
+    id: number
+}
 const initialState = {
     friends: [
         {
@@ -15,10 +21,10 @@ const initialState = {
             avaFriend: "https://image.flaticon.com/icons/png/512/186/premium/186313.png",
             id: 3
         }
-    ]
+    ] as Array<FriendType>
 }
 
-const sideBarReducer = (state = initialState, action) => {
+const sideBarReducer = (state = initialState, action:any) => {
     
     return state;
 }

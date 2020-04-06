@@ -1,39 +1,25 @@
 import { userAPI } from '../api/api'
+import {UserType, SetLoadingStatusType, IS_LOADING} from '../types/types'
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET_USERS'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_COUNT = 'SET_TOTAL_COUNT'
-const IS_LOADING = 'IS_LOADING'
 const SET_FOLLOW_PROGRESS = 'SET_FOLLOW_PROGRESS'
+
+type InitialStateType = typeof initialState
 
 const initialState = {
     users: [] as Array<UserType>,
-    pageSize: 5 as number,
-    totalCount:20 as number,
-    currentPage: 1 as number,
-    isLoading: false as boolean,
-    isFollowProgress: [] as Array<Number>
-}
-type UserType = {
-    id: number,
-    name: string,
-    uniqueUrlName: string | null,
-    photos: {
-        small: string | null,
-        large: string | null
-    }
-    status: string | null,
-    followed: boolean
-}
-type InitialStateType = typeof initialState
-type ActionType = {
-    type: typeof FOLLOW | typeof UNFOLLOW | typeof SET_USERS | typeof SET_CURRENT_PAGE | typeof SET_TOTAL_COUNT | typeof IS_LOADING | typeof SET_FOLLOW_PROGRESS 
-    payload: any
+    pageSize: 5,
+    totalCount:20,
+    currentPage: 1,
+    isLoading: false,
+    isFollowProgress: [] as Array<Number> //array of user ids
 }
 
-const usersReducer = (state:InitialStateType = initialState, action:ActionType) => {
+const usersReducer = (state = initialState, action:any):InitialStateType => {
     
     switch (action.type) {
         case FOLLOW:
@@ -100,17 +86,50 @@ const usersReducer = (state:InitialStateType = initialState, action:ActionType) 
     
 }
 
-export const followUser = (userId: number) => ({ type: FOLLOW, payload: userId })
-export const unfollowUser = (userId: number) => ({ type: UNFOLLOW, payload: userId })
-export const setUsers = (users: UserType) => ({ type: SET_USERS, payload: users })
-export const setCurrPage = (pageNumber: number) => ({ type: SET_CURRENT_PAGE, payload: pageNumber })
-export const setTotalCount = (totalCount: number) => ({ type: SET_TOTAL_COUNT, payload: totalCount })
-export const setLoadingStatus = (status: boolean) => ({ type: IS_LOADING, payload: status })
-export const setFollowProgress = (isLoading: boolean, userId:number) => ({ type: SET_FOLLOW_PROGRESS, payload: {isLoading, userId} })
+type FollowUserType = {
+    type: typeof FOLLOW
+    payload: number
+}
+export const followUser = (userId: number):FollowUserType => ({ type: FOLLOW, payload: userId })
+
+type UnfollowUserType = {
+    type: typeof UNFOLLOW
+    payload: number
+}
+export const unfollowUser = (userId: number):UnfollowUserType => ({ type: UNFOLLOW, payload: userId })
+
+type SetUsersType = {
+    type: typeof SET_USERS
+    payload: UserType
+}
+export const setUsers = (users: UserType):SetUsersType => ({ type: SET_USERS, payload: users })
+
+type SetCurrPageType = {
+    type: typeof SET_CURRENT_PAGE
+    payload: number
+}
+export const setCurrPage = (pageNumber: number):SetCurrPageType => ({ type: SET_CURRENT_PAGE, payload: pageNumber })
+
+type SetTotalCountType = {
+    type: typeof SET_TOTAL_COUNT
+    payload: number
+}
+export const setTotalCount = (totalCount: number):SetTotalCountType => ({ type: SET_TOTAL_COUNT, payload: totalCount })
+
+export const setLoadingStatus = (status: boolean):SetLoadingStatusType => ({ type: IS_LOADING, payload: status })
+
+type SetFollowProgressType = {
+    type: typeof SET_FOLLOW_PROGRESS
+    payload: {
+        isLoading: boolean,
+        userId:number
+    }
+}
+export const setFollowProgress = (isLoading: boolean, userId:number):SetFollowProgressType => ({ type: SET_FOLLOW_PROGRESS, payload: {isLoading, userId} })
 
 
 export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-    return (dispatch: Function) => {
+    return (dispatch: any) => {
         dispatch(setLoadingStatus(true));
         userAPI.getUsers(currentPage, pageSize)
             .then((data: any)=> {

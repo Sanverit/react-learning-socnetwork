@@ -1,11 +1,19 @@
 import { profileAPI } from '../api/api'
+import { 
+    PhotosType,
+    PostType,
+    DataProfileType,
+    SetLoadingStatusType, 
+    IS_LOADING 
+} from '../types/types'
 
 const ADD_POST = 'ADD-POST'
 const LIKE_POST = 'LIKE_POST'
 const SET_USER_PROFILE = 'SET_USER_PROFILE'
 const SET_USER_PROFILE_STATUS = 'SET_USER_PROFILE_STATUS'
 const SET_USER_PROFILE_PHOTO = 'SET_USER_PROFILE_PHOTO'
-const IS_LOADING = 'IS_LOADING'
+
+type InitialStateType = typeof initialState
 
 const initialState = {
     dataPosts: [
@@ -27,13 +35,14 @@ const initialState = {
             avatar: "https://cdn1.iconfinder.com/data/icons/user-pictures/100/female1-512.png",
             id: 3
         },
-    ],
-    dataProfile: null,
-    status: '',
-    isLoading: false
+    ] as Array<PostType>,
+    dataProfile: null as DataProfileType | null,
+    status: '' as string,
+    isLoading: false as boolean,
+    newPostText: '' as string
 }
 
-const profileReducer = (state = initialState, action) => {
+const profileReducer = ( state = initialState, action:any ):InitialStateType => {
     
     switch (action.type) {
         case ADD_POST: 
@@ -81,11 +90,10 @@ const profileReducer = (state = initialState, action) => {
                 dataProfile: {
                     ...state.dataProfile,
                     photos: {
-                        ...state.dataProfile.photos,
                         small: action.payload.small,
                         large: action.payload.large
                     }
-                }
+                } as DataProfileType
             }
 
         case IS_LOADING:
@@ -100,41 +108,64 @@ const profileReducer = (state = initialState, action) => {
     
 }
 
-export const setProfileData = (dataProfile) => ({ type: SET_USER_PROFILE, payload: dataProfile })
+type SetProfileDataType = {
+    type: typeof SET_USER_PROFILE
+    payload: DataProfileType
+}
+export const setProfileData = (dataProfile: DataProfileType):SetProfileDataType => ({ type: SET_USER_PROFILE, payload: dataProfile })
 
-export const addPostCreator = (postMessage) => ({ type: ADD_POST, payload: postMessage })
+type AddPostCreatorType = {
+    type: typeof ADD_POST
+    payload: string
+}
+export const addPostCreator = (postMessage: string):AddPostCreatorType => ({ type: ADD_POST, payload: postMessage })
 
-export const setProfileStatus = (status) => ({ type: SET_USER_PROFILE_STATUS, payload: status })
-export const setProfilePhoto = (photos) => ({ type: SET_USER_PROFILE_PHOTO, payload: photos })
+type SetProfileStatusType = {
+    type: typeof SET_USER_PROFILE_STATUS
+    payload: string
+}
+export const setProfileStatus = (status:string):SetProfileStatusType => ({ type: SET_USER_PROFILE_STATUS, payload: status })
 
-export const likePostCreator = (id) => ({ type: LIKE_POST, payload: id })
-export const setLoadingStatus = (status) => ({ type: IS_LOADING, payload: status })
+type SetProfilePhotoType = {
+    type: typeof SET_USER_PROFILE_PHOTO
+    payload: PhotosType
+}
+export const setProfilePhoto = (photos:PhotosType ):SetProfilePhotoType => ({ type: SET_USER_PROFILE_PHOTO, payload: photos })
+
+type LikePostCreatorType = {
+    type: typeof LIKE_POST
+    payload: number
+}
+export const likePostCreator = (id: number):LikePostCreatorType => ({ type: LIKE_POST, payload: id })
 
 
-export const userProfileThunkCreator = (userId) => {
-    return (dispatch) => {
+export const setLoadingStatus = (status:boolean):SetLoadingStatusType => ({ type: IS_LOADING, payload: status })
+
+
+export const userProfileThunkCreator = (userId: number) => {
+    return (dispatch:any) => {
         dispatch(setLoadingStatus(true))
 
         profileAPI.getProfile(userId)
-            .then((data)=> {
+            .then((data:DataProfileType)=> {
                 dispatch(setProfileData(data))
                 dispatch(setLoadingStatus(false))
             })
 
         profileAPI.getProfileStatus(userId)
-            .then((data)=> {
+            .then((data:string)=> {
                 dispatch(setProfileStatus(data))
                 dispatch(setLoadingStatus(false))
             })
     } 
 }
 
-export const savePhotoProfileThunkCreator = (file) => {
-    return (dispatch) => {
+export const savePhotoProfileThunkCreator = (file:any) => {
+    return (dispatch:any) => {
         dispatch(setLoadingStatus(true))
 
         profileAPI.updateProfilePhoto(file)
-            .then((data)=> {
+            .then((data:any)=> {
                 if (data.resultCode === 0){
                     dispatch(setProfilePhoto(data.data.photos))
                 }
@@ -143,11 +174,11 @@ export const savePhotoProfileThunkCreator = (file) => {
     } 
 }
 
-export const setNewStatusThunkCreator = (statusText) => {
-    return (dispatch) => {
+export const setNewStatusThunkCreator = (statusText:string) => {
+    return (dispatch:any) => {
         dispatch(setLoadingStatus(true))
         profileAPI.setProfileStatus(statusText)
-            .then((resultCode)=> {
+            .then((resultCode: number)=> {
                 if (resultCode === 0){
                     dispatch(setProfileStatus(statusText));
                 }

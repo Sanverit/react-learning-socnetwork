@@ -1,24 +1,20 @@
 import {authThunkCreator} from './authReducer'
+import {SetLoadingStatusType, IS_LOADING} from '../types/types'
 
 const INITIALIZE_SUCCESS = 'SET_INITIALIZED'
-const IS_LOADING = 'IS_LOADING'
 
 type ActionType = {
     type: typeof INITIALIZE_SUCCESS | typeof IS_LOADING,
     payload: boolean
 }
-export type InitialStateType = typeof initialState
+type InitialStateType = typeof initialState
 type SetInitializeSuccessType = {
     type: typeof INITIALIZE_SUCCESS
 }
-type SetLoadingStatusType = {
-    type: typeof IS_LOADING
-    payload: boolean
-}
 
 const initialState = {
-    initialized: false as boolean,
-    isLoading: false as boolean,
+    initialized: false,
+    isLoading: false,
 }
 
 const appReducer = (state = initialState, action:ActionType): InitialStateType => {
