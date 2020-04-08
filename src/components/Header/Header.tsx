@@ -2,8 +2,12 @@ import React from 'react'
 import { NavLink } from 'react-router-dom';
 import { Menu } from 'semantic-ui-react'
 
-function Header(props){
-    const { login, isAuth, logout }=props;
+type PropsType = {
+    login: string | null
+    isAuth: boolean
+    logout: () => void
+}
+function Header({ login, isAuth, logout }:PropsType){
     return (
         <Menu stackable>
             <Menu.Item>

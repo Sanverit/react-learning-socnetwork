@@ -4,20 +4,32 @@ import { compose } from 'redux'
 import { Divider } from 'semantic-ui-react'
 
 import { setNewStatusThunkCreator } from '../../../../redux/profileReducer'
+import {AppStateType} from '../../../../redux/reduxStore'
 import Status from './Status'
 
+type MapStatePropsType = {
+    status: string
+    userId: number | undefined
+    loggedUserId: number | null
+}
 
-function StatusContainerWithHooks(props) {
+type MapDispatchPropsType = {
+    setNewStatusThunkCreator: (newStatusText:string) => void
+}
+
+type PropsType = MapStatePropsType & MapDispatchPropsType
+
+function StatusContainerWithHooks({status, userId, loggedUserId, setNewStatusThunkCreator}:PropsType ) {
 
     const [editMode, setEditMode] = useState(false)
-    const [newStatusText, setNewStatusText] = useState(props.status)
+    const [newStatusText, setNewStatusText] = useState(status)
 
     useEffect(() => {
-        setNewStatusText(props.status)
-    }, [props.status])
+        setNewStatusText(status)
+    }, [status])
 
     const openEditStatus = () => {
-        if(props.loggedUserId === props.userId){
+        if(loggedUserId === userId){
             setEditMode(true)
         }
         
@@ -25,17 +37,17 @@ function StatusContainerWithHooks(props) {
 
     const closeEditStatus = () => {
         setEditMode(false)
-        props.setNewStatusThunkCreator(newStatusText)
+        setNewStatusThunkCreator(newStatusText)
     }
 
-    const updateNewStatusText = (newtext) => {
+    const updateNewStatusText = (newtext:string) => {
         setNewStatusText(newtext)
     }
 
     return (
         <>
             <Status
-                status={props.status} 
+                status={status} 
                 newStatusText={newStatusText} 
                 editMode={editMode} 
                 openEditStatus={openEditStatus}
@@ -48,11 +60,10 @@ function StatusContainerWithHooks(props) {
 }
 
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         status: state.profilePage.status,
-        newStatusText: state.profilePage.newStatusText,
-        userId: state.profilePage.dataProfile.userId,
+        userId: state.profilePage.dataProfile?.userId,
         loggedUserId: state.auth.id
     }
 };

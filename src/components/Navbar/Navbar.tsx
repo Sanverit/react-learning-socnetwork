@@ -3,7 +3,7 @@ import React from 'react';
 import Navigation from './Navigation/Navigation'
 import s from './Navbar.module.css';
 
-function Navbar(props){
+function Navbar(){
     return (
         <div className={s.sideBar}>
             <Navigation />

@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import { Input } from 'semantic-ui-react'
 
-function Status(props){
-    const {status, newStatusText, editMode, openEditStatus, closeEditStatus, updateNewStatusText} = props;
+type PropsType = {
+    status: string
+    newStatusText: string
+    editMode: boolean
+    openEditStatus: () => void
+    closeEditStatus: () => void
+    updateNewStatusText: (newStatus:string) => void
+}
+function Status({status, newStatusText, editMode, openEditStatus, closeEditStatus, updateNewStatusText}:PropsType){
 
-    const onStatusChange = (e) => {
+    const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
         let newStatus = e.target.value;
         updateNewStatusText(newStatus);
     }

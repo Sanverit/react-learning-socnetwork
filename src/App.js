@@ -32,7 +32,7 @@ class App extends Component {
           <div className="appWrapperContent">
             <Route path="/profile/:userId?" render={() => <ProfileContainer />} />
             <Route path="/dialogs" render={() => <DialogsContainer />} />
-            <Route path="/users" render={() => <UsersContainer />} />
+            <Route path="/users" render={() => <UsersContainer pageTitle='page title' />} />
             <Route path="/login" render={() => <Login />} />
           </div>
         </div>

@@ -2,8 +2,11 @@ import React from 'react'
 
 import s from './Message.module.css'
 
-function Message(props){
-    const {text} = props;
+type PropsType = {
+    text: string
+}
+
+function Message({text}:PropsType){
     return(
         <div className={s.message}>
             {text}

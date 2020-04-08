@@ -4,9 +4,28 @@ import { compose } from 'redux'
 import { Divider } from 'semantic-ui-react'
 
 import { setNewStatusThunkCreator } from '../../../../redux/profileReducer'
+import {AppStateType} from '../../../../redux/reduxStore'
 import Status from './Status'
 
-class StatusContainer extends React.Component {
+type MapStatePropsType = {
+    status: string
+    userId: number | undefined
+    loggedUserId: number | null
+}
+
+type MapDispatchPropsType = {
+    setNewStatusThunkCreator: (newStatusText:string) => void
+}
+
+type PropsType = MapStatePropsType & MapDispatchPropsType
+
+type StateType = {
+    editMode: boolean,
+    newStatusText: string
+}
+
+
+class StatusContainer extends React.Component<PropsType, StateType> {
     state = {
         editMode: false,
         newStatusText: this.props.status || ''
@@ -28,7 +47,7 @@ class StatusContainer extends React.Component {
         this.props.setNewStatusThunkCreator(this.state.newStatusText)
     }
 
-    updateNewStatusText = (newtext) => {
+    updateNewStatusText = (newtext:string) => {
         this.setState({
             newStatusText: newtext
         })
@@ -52,11 +71,10 @@ class StatusContainer extends React.Component {
     
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     return {
         status: state.profilePage.status,
-        newStatusText: state.profilePage.newStatusText,
-        userId: state.profilePage.dataProfile.userId,
+        userId: state.profilePage.dataProfile?.userId,
         loggedUserId: state.auth.id
     }
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import s from './Navigation.module.css';
 
-function Navigation(props){
+function Navigation(){
     return (
         <nav className={s.nav}>
             <div>

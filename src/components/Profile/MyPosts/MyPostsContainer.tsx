@@ -2,20 +2,21 @@ import { connect } from 'react-redux';
 
 import { addPostCreator, likePostCreator } from '../../../redux/profileReducer'
 import MyPosts from './MyPosts';
+import {AppStateType} from '../../../redux/reduxStore'
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType) => {
     return {
         myPosts: state.profilePage.dataPosts,
         newPostText: state.profilePage.newPostText
     }
 };
 
-let mapDispatchToProps = (dispatch) => {
+let mapDispatchToProps = (dispatch: any) => {
     return {
-        addPost: (postMessage) => {
+        addPost: (postMessage: string) => {
             dispatch(addPostCreator(postMessage));
         },
-        likePost: (id) => {
+        likePost: (id: number) => {
             dispatch(likePostCreator(id));
         }
     }

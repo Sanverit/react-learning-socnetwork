@@ -1,14 +1,21 @@
-import React from 'react'
-import { Icon, Card } from 'semantic-ui-react'
+import React, {ChangeEvent} from 'react'
+import { Card } from 'semantic-ui-react'
 
-import StatusContainerComponent from './Status/Status.container';
+// import StatusContainerComponent from './Status/Status.container';
+import {DataProfileType} from '../../../types/types'
 import StatusContainerComponentWithHooks from './Status/Status.containerWithHooks';
 import s from './ProfileInfo.module.css'
 
-function ProfileInfo({profile, isOwner, savePhotoProfile}){
+type PropsType = {
+    profile: DataProfileType
+    isOwner: boolean
+    savePhotoProfile: (file: any) => void
+}
 
-    const uploadPhotoprofile = (e) => {
-       if(e.target.files.length){
+function ProfileInfo({profile, isOwner, savePhotoProfile}:PropsType){
+
+    const uploadPhotoprofile = (e: ChangeEvent<HTMLInputElement>) => {
+       if(e.target.files?.length){
             savePhotoProfile(e.target.files[0])
        }
     }

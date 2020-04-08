@@ -1,9 +1,15 @@
 import React from 'react'
 import { Comment, Button, Icon, Label } from 'semantic-ui-react'
-// import s from './Post.module.css'
 
-function Post(props){
-    const {avatar, message, likes, onLikePost, postId} = props;
+type PropsType = {
+    avatar: string
+    likes: number
+    message: string
+    postId: number
+    onLikePost: (postId: number) => void
+}
+
+function Post({avatar, message, likes, onLikePost, postId}: PropsType){
     return(
         <Comment>
             <Comment.Avatar src={avatar} />
